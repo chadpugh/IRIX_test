@@ -293,6 +293,23 @@ export const PRESETS: Preset[] = [
     menuColor: "default",
     radius: "default",
   },
+  // IRIX.
+  {
+    name: "radix-irix",
+    title: "IRIX (Radix)",
+    description: "IRIX / Lucide / Inter",
+    base: "radix",
+    style: "vega",
+    baseColor: "gray",
+    theme: "irix",
+    iconLibrary: "lucide",
+    font: "inter",
+    item: "Item",
+    rtl: false,
+    menuAccent: "subtle",
+    menuColor: "default",
+    radius: "small",
+  },
 ]
 
 export function getThemesForBaseColor(baseColorName: string) {
