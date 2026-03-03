@@ -170,6 +170,22 @@
   background-color: oklch(1 0 0);
 }
 
+/* IRIX: Ghost Sidebar modifier for transparent sidebars on light backgrounds */
+.sidebar-ghost {
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--accent-foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+}
+
+.dark .sidebar-ghost {
+  --sidebar-foreground: oklch(0.9667 0.0017 247.8394);
+  /* Ensure dark mode stays readable */
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
