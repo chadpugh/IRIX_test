@@ -20,7 +20,7 @@ function BaseUILogo() {
 
 export function Announcement() {
   return (
-    <Badge asChild variant="secondary" className="bg-muted">
+    <Badge asChild variant="secondary" className="bg-muted text-muted-foreground hover:text-foreground">
       <Link href="/docs/changelog/2026-01-rtl">
         RTL Support <ArrowRightIcon />
       </Link>

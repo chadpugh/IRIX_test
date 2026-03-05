@@ -111,16 +111,16 @@ export type DesignSystemConfig = z.infer<typeof designSystemConfigSchema>
 
 export const DEFAULT_CONFIG: DesignSystemConfig = {
   base: "radix",
-  style: "nova",
-  baseColor: "neutral",
-  theme: "neutral",
+  style: "vega",
+  baseColor: "gray",
+  theme: "irix",
   iconLibrary: "lucide",
-  font: "inter",
+  font: "roboto",
   item: "Item",
   rtl: false,
   menuAccent: "subtle",
   menuColor: "default",
-  radius: "default",
+  radius: "small",
   template: "next",
 }
 
@@ -297,13 +297,13 @@ export const PRESETS: Preset[] = [
   {
     name: "radix-irix",
     title: "IRIX (Radix)",
-    description: "IRIX / Lucide / Inter",
+    description: "IRIX / Lucide / Roboto",
     base: "radix",
     style: "vega",
     baseColor: "gray",
     theme: "irix",
     iconLibrary: "lucide",
-    font: "inter",
+    font: "roboto",
     item: "Item",
     rtl: false,
     menuAccent: "subtle",

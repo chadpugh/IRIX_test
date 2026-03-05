@@ -112,6 +112,7 @@
     "zod-to-json-schema": "^3.24.6"
   },
   "devDependencies": {
+    "@rollup/rollup-darwin-arm64": "^4.59.0",
     "@types/babel__core": "^7.20.5",
     "@types/fs-extra": "^11.0.4",
     "@types/prompts": "^2.4.9",
