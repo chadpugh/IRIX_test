@@ -170,6 +170,17 @@
   h6 {
     @apply font-heading;
   }
+
+  button,
+  [role="button"],
+  a,
+  select,
+  summary,
+  [type="button"],
+  [type="submit"],
+  [type="reset"] {
+    cursor: pointer;
+  }
 }
 
 /* IRIX: White backgrounds for input fields in light mode */
