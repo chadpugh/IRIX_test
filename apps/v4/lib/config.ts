@@ -33,6 +33,10 @@ export const siteConfig = {
       href: "/create",
       label: "Create",
     },
+    {
+      href: "/docs/irix/getting-started",
+      label: "IRIX",
+    },
   ],
 }
 

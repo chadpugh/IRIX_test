@@ -1,0 +1,282 @@
+---
+title: Getting Started
+description: Learn how to use the IRIX Prototyping Sandbox to rapidly build IntelliScript dashboards with AI.
+---
+
+## Overview
+
+The **IRIX Prototyping Sandbox** lets designers and non-coders rapidly scaffold production-ready, data-dense dashboards for **Milliman IntelliScript** using an AI code editor like Claude Code, Cursor, or GitHub Copilot.
+
+The sandbox is pre-loaded with:
+- The **IRIX design system** (shadcn/ui restyled for Milliman)
+- **4 baseline layout templates** covering common IntelliScript view types
+- **Realistic mock data** reflecting the IntelliScript domain (applicants, risk scores, Rx history)
+- An **AI system prompt** (`CLAUDE.md`) that teaches your editor the domain, the rules, and the components
+
+You don't need to know React or TypeScript. You just need to describe what you want to build.
+
+---
+
+## Quick Start
+
+<Steps>
+
+<Step>Clone the **irix-starter** repo and install.</Step>
+
+```bash
+git clone <your-repo-url>
+cd irix-starter
+pnpm install
+pnpm dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) to see the sandbox, or browse [/examples](http://localhost:3000/examples) to see the templates live.
+
+<Step>Open the project in your AI code editor (Claude Code, Cursor, etc.) and tell it what to build.</Step>
+
+Example prompts:
+
+```text
+Create a new page at app/my-dashboard/page.tsx based on the dashboard template.
+Show a list of IntelliScript applicants with KPI cards on top
+for total count, average risk score, and critical count.
+```
+
+```text
+Build me a page based on the master-detail template. Show applicants
+as expandable parent rows. When I click one, expand to show their
+Rx history as nested child rows underneath.
+```
+
+<Step>The AI creates a new page in `app/`, wires up mock data, and gives you a working route.</Step>
+
+<Step>Iterate! Ask the AI to refine: "Make the table sortable", "Add a filter for risk tier", "Show the score trend as a sparkline".</Step>
+
+</Steps>
+
+---
+
+## Starter Templates
+
+Each template is a fully working React component in the `templates/` folder. Tell your AI to copy one as the base for a new page. All templates use components from `@/components/ui` and data from `lib/mock-data/`.
+
+---
+
+### Sidebar List
+
+**Layout:** Persistent sidebar navigation + main content area with data table
+
+**Best for:** Browsing a flat list of records with section-based navigation, managing rules, or viewing a searchable index.
+
+<Image src="/images/templates/sidebar-list.png" alt="Sidebar List template preview" width={640} height={640} />
+
+**Get started with this template:**
+
+```text
+Create a new prototype based on the sidebar-list template.
+The sidebar should have two nav sections: "RISK FACTORS" with
+items for Identification, Insights, and Parameters, and
+"ADMINISTRATION" with Dashboard Config and Product Config.
+The main area should show a searchable table of all applicants
+with their risk tier badges and composite scores. Add action
+buttons for Bulk Download and Add New.
+```
+
+→ [View template source](file:///prototypes/_templates/sidebar-list.tsx)
+
+---
+
+### Dashboard
+
+**Layout:** KPI cards row → charts/visualization area → summary data table
+
+**Best for:** Portfolio overviews, aggregate metrics, trend analysis with drill-down into individual records.
+
+<Image src="/images/templates/dashboard.png" alt="Dashboard template preview" width={640} height={640} />
+
+**Get started with this template:**
+
+```text
+Create a new prototype based on the dashboard template.
+Show 4 KPI cards at the top: total applicants, average composite
+score, critical + high risk count, and pending review count.
+Below that, add a score trend line chart on the left and a
+risk distribution bar chart on the right. Then show a full
+applicant data table at the bottom with search and pagination.
+```
+
+→ [View template source](file:///prototypes/_templates/dashboard.tsx)
+
+---
+
+### Detail View
+
+**Layout:** Breadcrumb header → two-column grid (wide left + narrow right metadata sidebar)
+
+**Best for:** Deep-diving into a single record's full detail — evaluations, prescriptions, score breakdowns — with version history and metadata in a sidebar.
+
+<Image src="/images/templates/detail-view.png" alt="Detail View template preview" width={640} height={640} />
+
+**Get started with this template:**
+
+```text
+Create a new prototype based on the detail-view template.
+Show applicant APP-1003 (Robert Johnson). The left column
+should have a Details card with risk tier badge, a Prescriptions
+section showing each drug with risk flag badges, and a Risk Score
+Breakdown section with three score boxes. The right column should
+show an Active Versions table, a Version History timeline, and
+an Applicant Summary card.
+```
+
+→ [View template source](file:///prototypes/_templates/detail-view.tsx)
+
+---
+
+### Master-Detail Table
+
+**Layout:** Tab filters → search + filter chips → expandable parent rows with nested child rows
+
+**Best for:** Viewing hierarchical/grouped data where parent rows (applicants, rules, criteria) expand to show related child records (prescriptions, insights, evaluations).
+
+<Image src="/images/templates/master-detail.png" alt="Master-Detail Table template preview" width={640} height={640} />
+
+**Get started with this template:**
+
+```text
+Create a new prototype based on the master-detail template.
+Show all applicants as expandable parent rows with columns for
+name, risk tier badge, status, composite score, and Rx score.
+When a row is expanded, show nested child rows for their Rx
+history — drug name, risk flag badge, prescriber type, and fill
+date. Add tab filters for All, In Review, Approved, and Declined.
+Include a search bar and bulk action buttons.
+```
+
+→ [View template source](file:///prototypes/_templates/master-detail.tsx)
+
+---
+
+## Mock Data
+
+All prototypes should use the typed mock data in `lib/mock-data/` — never hardcode fake data inline. Here's what's available:
+
+### Applicants (`applicants.ts`)
+
+```ts
+export interface Applicant {
+  id: string;          // e.g. "APP-1001"
+  name: string;        // e.g. "John Doe"
+  age: number;
+  state: string;       // US state abbreviation
+  applicationDate: string;
+  status: 'Review' | 'Approved' | 'Declined' | 'Pending Info';
+  riskTier: 'Low' | 'Moderate' | 'High' | 'Critical' | 'Pending';
+  policyAmount: number;
+}
+```
+
+### Risk Scores (`risk-scores.ts`)
+
+```ts
+export interface RiskScore {
+  applicantId: string;
+  compositeScore: number;     // 0-1000 scale
+  recentChange: number;       // e.g. +12 or -5
+  breakdown: {
+    rxScore: number;          // Prescription risk component
+    conditionScore: number;   // Medical condition component
+    labScore: number;         // Lab results component
+  };
+  trend: Array<{
+    date: string;             // "YYYY-MM"
+    score: number;
+  }>;
+}
+```
+
+### Rx History (`rx-history.ts`)
+
+```ts
+export interface RxRecord {
+  id: string;
+  applicantId: string;
+  drugName: string;           // e.g. "Lisinopril 10mg"
+  ndc: string;                // National Drug Code
+  fillDate: string;
+  daysSupply: number;
+  prescriberType: string;     // e.g. "Cardiologist"
+  riskFlag: 'None' | 'Warning' | 'High Risk';
+}
+```
+
+### How they relate
+
+1. Start with an `Applicant` (e.g. ID `APP-1001`)
+2. Look up their scores: `mockRiskScores["APP-1001"]`
+3. Look up their Rx history: `mockRxHistory.filter(rx => rx.applicantId === "APP-1001")`
+
+---
+
+## AI System Prompt
+
+The file `.claude/CLAUDE.md` is automatically loaded by Claude Code when the repo is opened. It teaches the AI:
+
+```markdown
+You are building UI prototypes for Milliman IntelliScript, a product that
+helps life insurance underwriters make faster, more informed decisions by
+aggregating and scoring prescription (Rx) history, medical data, and other
+risk indicators.
+
+Users of these interfaces are:
+- Underwriters reviewing individual applicant risk profiles
+- Managers viewing team/portfolio-level dashboards
+- Actuaries analyzing trends across populations
+```
+
+**Key rules the AI follows:**
+- Always import components from `@/components/ui` (never install shadcn raw)
+- Use IRIX color tokens (`--irix-primary`, `--irix-surface`, etc.)
+- All prototypes go in `prototypes/`
+- Use mock data from `lib/mock-data/` — never hardcode fake data inline
+- Prefer composition: `Card > Table > Badge`, not custom HTML
+
+---
+
+## Tips for Prompting
+
+### Be specific about what data to show
+
+```text
+✅ "Show a table of applicants filtered to High and Critical risk tiers,
+   with columns for name, state, composite score, and Rx score."
+
+❌ "Show me some data."
+```
+
+### Reference templates by name
+
+```text
+✅ "Start from the master-detail template and expand each applicant
+   to show their Rx history grouped by prescriber type."
+
+❌ "Build me a page."
+```
+
+### Reference the example for style
+
+```text
+✅ "Make it look like the underwriting-summary example, but for
+   population trends instead of individual applicants."
+```
+
+### Ask for iteration
+
+The AI rarely gets it perfect on the first pass. Keep refining:
+
+```text
+"Add a badge showing the risk flag on each Rx record."
+"Make the table sortable by composite score."
+"Add a KPI card at the top showing the average Rx score."
+"Change the detail panel to use tabs instead of stacked sections."
+```
